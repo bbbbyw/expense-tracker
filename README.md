@@ -20,60 +20,6 @@ A full-stack expense tracking application built with Next.js 14, TypeScript, Pos
 - **Form Handling**: React Hook Form with Zod validation
 - **Icons**: Lucide React
 
-## Quick Start
-
-### 1. Install Dependencies
-
-```bash
-npm install
-```
-
-### 2. Set Up Environment Variables
-
-Create a `.env` file in the root directory:
-
-```env
-DATABASE_URL="postgresql://username:password@localhost:5432/expense_tracker"
-NODE_ENV="development"
-```
-
-### 3. Set Up Database
-
-```bash
-# Generate Prisma Client
-npx prisma generate
-
-# Create and run migrations
-npx prisma migrate dev --name init
-
-# (Optional) Seed default categories
-npx prisma db seed
-```
-
-### 4. Run Development Servers
-
-```bash
-npm run dev
-```
-
-This starts both:
-- **Express API Server** on http://localhost:3001
-- **Next.js Frontend** on http://localhost:3000
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-## Deployment
-
-**See `DEPLOY.md` for simple deployment instructions.**
-
-Quick summary:
-1. Set up cloud database (Supabase/Railway/Neon)
-2. Run migrations: `npx prisma migrate deploy`
-3. Push to GitHub
-4. Deploy to Vercel (one project - frontend and backend together)
-5. Add `DATABASE_URL` environment variable
-6. Done! 🚀
-
 ## Project Structure
 
 ```
@@ -104,13 +50,3 @@ Quick summary:
 
 ### Analytics
 - `GET /api/analytics/summary` - Get analytics summary
-
-## Development
-
-- Run linting: `npm run lint`
-- View database: `npx prisma studio`
-- Generate Prisma Client: `npx prisma generate`
-
-## License
-
-MIT
