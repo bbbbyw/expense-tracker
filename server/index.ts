@@ -43,10 +43,8 @@ app.get('/', (req, res) => {
   res.json({ status: 'ok', message: 'Expense Tracker API', version: '1.0.0' })
 })
 
-// API Routes
-// IMPORTANT: In Vercel serverless, when request comes to /api/categories,
-// Vercel routes it to api/index.ts, and Express receives the path
-// We need to handle both cases: with /api/ prefix and without
+
+// handle both cases: with /api/ prefix and without
 
 console.log('[SERVER INDEX] Registering API routes...')
 
@@ -114,8 +112,8 @@ app.use((req, res) => {
 // Only start server if not in Vercel serverless environment
 if (process.env.VERCEL !== '1') {
   app.listen(PORT, () => {
-    console.log(`🚀 Express server running on http://localhost:${PORT}`)
-    console.log(`📊 API endpoints available at http://localhost:${PORT}/api`)
+    console.log(`Express server running on http://localhost:${PORT}`)
+    console.log(`API endpoints available at http://localhost:${PORT}/api`)
   })
 }
 
