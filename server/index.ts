@@ -28,10 +28,16 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', message: 'Expense Tracker API is running' })
 })
 
+// Root API endpoint
+app.get('/', (req, res) => {
+  res.json({ status: 'ok', message: 'Expense Tracker API', version: '1.0.0' })
+})
+
 // API Routes
-app.use('/api/categories', categoriesRoutes)
-app.use('/api/expenses', expensesRoutes)
-app.use('/api/analytics', analyticsRoutes)
+// Note: In Vercel, /api/* is already routed to this function, so we don't need /api/ prefix
+app.use('/categories', categoriesRoutes)
+app.use('/expenses', expensesRoutes)
+app.use('/analytics', analyticsRoutes)
 
 // Error handling middleware
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
