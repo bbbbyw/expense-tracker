@@ -1,10 +1,13 @@
 // Vercel Serverless Function entry point for Express backend
-// Using TypeScript - Vercel will compile this automatically
-import app from '../server/index'
+// Import the Express app from server/index.ts
+// Vercel will compile this TypeScript file to CommonJS automatically
 
 // Add logging to see if this file is being called
 console.log('[API INDEX] Serverless function loaded')
 
-// Export the Express app - Vercel serverless functions automatically handle Express apps
-export default app
+// Import using ES6 syntax - Vercel will compile this correctly
+import app from '../server/index'
 
+// Export the Express app
+// Using default export which Vercel will convert to module.exports
+export default app
