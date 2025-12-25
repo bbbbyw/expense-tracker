@@ -17,9 +17,9 @@ app.use(cors({
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-// Request logging middleware
+// Request logging middleware - log full request details for debugging
 app.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`)
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path} | originalUrl: ${req.originalUrl} | baseUrl: ${req.baseUrl}`)
   next()
 })
 
@@ -34,16 +34,17 @@ app.get('/', (req, res) => {
 })
 
 // API Routes
-// In Vercel serverless, requests to /api/categories come to this function
-// The path received is /categories (Vercel strips /api/)
-app.use('/categories', categoriesRoutes)
-app.use('/expenses', expensesRoutes)
-app.use('/analytics', analyticsRoutes)
-
-// Also handle /api/* paths in case Vercel doesn't strip the prefix
+// IMPORTANT: In Vercel serverless, when request comes to /api/categories,
+// Vercel routes it to api/index.js, and Express receives the FULL path: /api/categories
+// So we MUST handle /api/* paths (not just /categories)
 app.use('/api/categories', categoriesRoutes)
 app.use('/api/expenses', expensesRoutes)
 app.use('/api/analytics', analyticsRoutes)
+
+// Also handle paths without /api/ prefix for local development (when running on port 3001)
+app.use('/categories', categoriesRoutes)
+app.use('/expenses', expensesRoutes)
+app.use('/analytics', analyticsRoutes)
 
 // Error handling middleware
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -54,9 +55,15 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
   })
 })
 
-// 404 handler
+// 404 handler - log the path for debugging
 app.use((req, res) => {
-  res.status(404).json({ error: 'Route not found' })
+  console.log(`[404] Route not found: ${req.method} ${req.path} | originalUrl: ${req.originalUrl}`)
+  res.status(404).json({ 
+    error: 'Route not found',
+    path: req.path,
+    originalUrl: req.originalUrl,
+    method: req.method
+  })
 })
 
 // Only start server if not in Vercel serverless environment
