@@ -34,10 +34,16 @@ app.get('/', (req, res) => {
 })
 
 // API Routes
-// Note: In Vercel, /api/* is already routed to this function, so we don't need /api/ prefix
+// In Vercel serverless, requests to /api/categories come to this function
+// The path received is /categories (Vercel strips /api/)
 app.use('/categories', categoriesRoutes)
 app.use('/expenses', expensesRoutes)
 app.use('/analytics', analyticsRoutes)
+
+// Also handle /api/* paths in case Vercel doesn't strip the prefix
+app.use('/api/categories', categoriesRoutes)
+app.use('/api/expenses', expensesRoutes)
+app.use('/api/analytics', analyticsRoutes)
 
 // Error handling middleware
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
