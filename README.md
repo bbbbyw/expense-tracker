@@ -14,18 +14,13 @@ A full-stack expense tracking application built with Next.js 14, TypeScript, Pos
 ## Tech Stack
 
 - **Frontend**: Next.js 14 (App Router), React, TypeScript, Tailwind CSS
-- **Backend**: Node.js with Express.js (separate server)
+- **Backend**: Node.js with Express.js
 - **Database**: PostgreSQL with Prisma ORM
 - **Charts**: Recharts
 - **Form Handling**: React Hook Form with Zod validation
 - **Icons**: Lucide React
 
-## Prerequisites
-
-- Node.js 18+ and npm
-- PostgreSQL database
-
-## Getting Started
+## Quick Start
 
 ### 1. Install Dependencies
 
@@ -42,8 +37,6 @@ DATABASE_URL="postgresql://username:password@localhost:5432/expense_tracker"
 NODE_ENV="development"
 ```
 
-Replace `username`, `password`, and `expense_tracker` with your PostgreSQL credentials.
-
 ### 3. Set Up Database
 
 ```bash
@@ -59,104 +52,58 @@ npx prisma db seed
 
 ### 4. Run Development Servers
 
-The application runs two servers:
-- **Express API Server** (port 3001) - Backend API
-- **Next.js Frontend** (port 3000) - Frontend application
-
 ```bash
 npm run dev
 ```
 
-This will start both servers concurrently. Open [http://localhost:3000](http://localhost:3000) in your browser.
+This starts both:
+- **Express API Server** on http://localhost:3001
+- **Next.js Frontend** on http://localhost:3000
 
-**Note**: Make sure both servers are running. The frontend communicates with the Express API server.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Deployment
+
+**See `DEPLOY.md` for simple deployment instructions.**
+
+Quick summary:
+1. Set up cloud database (Supabase/Railway/Neon)
+2. Run migrations: `npx prisma migrate deploy`
+3. Push to GitHub
+4. Deploy to Vercel (one project - frontend and backend together)
+5. Add `DATABASE_URL` environment variable
+6. Done! 🚀
 
 ## Project Structure
 
 ```
-├── server/              # Express backend server
-│   ├── index.ts        # Express server entry point
-│   ├── routes/         # API route handlers
-│   │   ├── categories.ts
-│   │   ├── expenses.ts
-│   │   └── analytics.ts
-│   └── lib/            # Server utilities
-│       ├── prisma.ts
-│       └── validations.ts
-├── app/                # Next.js frontend
-│   ├── categories/     # Categories page
-│   ├── expenses/       # Expenses page
-│   └── page.tsx       # Dashboard page
-├── components/
-│   ├── ui/              # Reusable UI components
-│   ├── expenses/        # Expense-related components
-│   ├── categories/      # Category-related components
-│   ├── dashboard/       # Dashboard components
-│   └── shared/          # Shared components
-├── lib/               # Frontend utilities
-│   ├── api-client.ts  # API client helper
-│   ├── api-config.ts  # API configuration
-│   ├── utils.ts       # Utility functions
-│   └── date-utils.ts # Date helper functions
-├── prisma/
-│   └── schema.prisma    # Database schema
-└── types/
-    └── index.ts        # TypeScript types
+├── app/              # Next.js app directory (frontend)
+├── server/           # Express backend
+│   ├── routes/       # API routes
+│   └── lib/          # Backend utilities
+├── components/       # React components
+├── lib/              # Frontend utilities
+├── prisma/           # Database schema and migrations
+├── api/              # Vercel serverless entry point
+└── vercel.json       # Vercel configuration
 ```
 
 ## API Endpoints
 
-All API endpoints are served by the Express server running on port 3001.
-
 ### Categories
-- `GET http://localhost:3001/api/categories` - Get all categories
-- `POST http://localhost:3001/api/categories` - Create a category
-- `PUT http://localhost:3001/api/categories/:id` - Update a category
-- `DELETE http://localhost:3001/api/categories/:id` - Delete a category
+- `GET /api/categories` - Get all categories
+- `POST /api/categories` - Create category
+- `PUT /api/categories/:id` - Update category
+- `DELETE /api/categories/:id` - Delete category
 
 ### Expenses
-- `GET http://localhost:3001/api/expenses` - Get expenses with filtering and pagination
-- `POST http://localhost:3001/api/expenses` - Create an expense
-- `PUT http://localhost:3001/api/expenses/:id` - Update an expense
-- `DELETE http://localhost:3001/api/expenses/:id` - Delete an expense
+- `GET /api/expenses` - Get expenses (with filtering, sorting, pagination)
+- `POST /api/expenses` - Create expense
+- `PUT /api/expenses/:id` - Update expense
+- `DELETE /api/expenses/:id` - Delete expense
 
 ### Analytics
-- `GET http://localhost:3001/api/analytics/summary` - Get analytics summary
-
-## Security Features
-
-- Input validation with Zod schemas
-- SQL injection protection via Prisma ORM
-- Proper error handling and HTTP status codes
-- Type-safe API routes with TypeScript
-
-## Production Deployment
-
-1. Build the Next.js frontend:
-```bash
-npm run build
-```
-
-2. Set environment variables in your hosting platform:
-   - `DATABASE_URL` - PostgreSQL connection string
-   - `NEXT_PUBLIC_API_URL` - Your Express API server URL (e.g., `https://api.yourapp.com`)
-   - `PORT` - Express server port (default: 3001)
-
-3. Run database migrations:
-```bash
-npx prisma migrate deploy
-```
-
-4. Start the servers:
-```bash
-# Start Express API server
-npm run start:server
-
-# In another terminal, start Next.js frontend
-npm run start:client
-```
-
-**Note**: In production, you may want to use a process manager like PM2 or deploy the servers separately.
+- `GET /api/analytics/summary` - Get analytics summary
 
 ## Development
 
@@ -167,4 +114,3 @@ npm run start:client
 ## License
 
 MIT
-

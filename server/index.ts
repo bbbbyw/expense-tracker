@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3001
 // Middleware
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? process.env.FRONTEND_URL || true // Allow same origin in production (Vercel)
+    ? true // Allow same origin in production (monorepo - same domain)
     : 'http://localhost:3000',
   credentials: true,
 }))
